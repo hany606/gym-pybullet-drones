@@ -248,7 +248,6 @@ if __name__ == "__main__":
     
     #### Set up the multiagent params of the trainer's config ##
     config["multiagent"] = { 
-        # "policies": {f"pol{i}": (None, observer_space, action_space, {"agent_id": i}) for i in range(NUM_DRONES)},
         "policies": {
             "pol0": (None, observer_space, action_space, {"agent_id": 0,}),
             "pol1": (None, observer_space, action_space, {"agent_id": 1,}),
@@ -264,10 +263,6 @@ if __name__ == "__main__":
     agent.restore(checkpoint)
 
     #### Extract and print policies ############################
-    # policies = [agent.get_policy(f"pol{i}") for i in range(NUM_DRONES)]
-    # for i in range(NUM_DRONES):
-    #     print(f"action model {i}", policies[i].model.action_model)
-    #     print(f"value model {i}", policies[i].model.value_model)
     policy0 = agent.get_policy("pol0")
     print("action model 0", policy0.model.action_model)
     print("value model 0", policy0.model.value_model)
@@ -324,13 +319,7 @@ if __name__ == "__main__":
         temp = {}
         temp[0] = policy0.compute_single_action(np.hstack([action[1], obs[1], obs[0]])) # Counterintuitive order, check params.json
         temp[1] = policy1.compute_single_action(np.hstack([action[0], obs[0], obs[1]]))
-        action = {0: temp[0][0]}
-        for i in range(1, NUM_DRONES):
-            action[i] = temp[1][0]
-        # temp[0] = policies[0].compute_single_action(np.hstack([action[1], obs[1], obs[0]])) # Counterintuitive order, check params.json
-        # for i in range(1, NUM_DRONES):
-        #     temp[i] = policies[i].compute_single_action(np.hstack([action[0], obs[0], obs[1]]))
-        # action = {i: temp[0][i] for i in range(NUM_DRONES)}
+        action = {0: temp[0][0], 1: temp[1][0]}
         obs, reward, done, info = test_env.step(action)
         test_env.render()
         if OBS==ObservationType.KIN: 
