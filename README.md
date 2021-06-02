@@ -14,6 +14,8 @@ This repository's `master` branch is actively developed, please `git pull` frequ
 
 - Everything after a `$` is entered on a terminal, everything after `>>>` is passed to a Python interpreter
 
+- To better understand how the PyBullet back-end works, refer to its [Quickstart Guide](https://docs.google.com/document/d/10sXEhzFRSnvFcl3XxNGhnD4N2SedqwdAvK3dsihxVUA/edit#heading=h.2ye70wns7io3)
+
 - Suggestions and corrections are very welcome in the form of [issues](https://github.com/utiasDSL/gym-pybullet-drones/issues) and [pull requests](https://github.com/utiasDSL/gym-pybullet-drones/pulls), respectively
 
 
@@ -111,7 +113,7 @@ There are 2 basic template scripts in `examples/`: `fly.py` and `learn.py`
 - `fly.py` runs an independent flight **using PID control** implemented in class [`DSLPIDControl`](https://github.com/utiasDSL/gym-pybullet-drones/tree/master/gym_pybullet_drones/control/DSLPIDControl.py)
 ```
 $ cd gym-pybullet-drones/examples/
-$ pytho3 fly.py                             # Try 'python3 fly.py -h' to show the script's customizable parameters
+$ python3 fly.py                             # Try 'python3 fly.py -h' to show the script's customizable parameters
 ```
 > Tip: use the GUI's sliders and button `Use GUI RPM` to override the control with interactive inputs
 
@@ -384,11 +386,13 @@ $ ros2 run ros2_gym_pybullet_drones random_control
 
 
 ## Future Developments
-- Aviary with symbolic [CasADi](https://web.casadi.org) dynamics for learning-based control
-- Multiple downwash contributions (see `_downwash()` in class `BaseAviary`)
-- Heterogeneous multi-robot systems (import multiple URDF in `_housekeeping()` in class `BaseAviary`)
-- Interface to and template scripts using [PyMARL](https://github.com/oxwhirl/pymarl)
-- Google [Colaboratory](https://colab.research.google.com/notebooks/intro.ipynb) examples
+- Template scripts using [PyMARL](https://github.com/oxwhirl/pymarl)
+- Google [Colaboratory](https://colab.research.google.com/notebooks/intro.ipynb) example
+- Alternative multi-contribution downwash effect
+
+## Ongoing Projects
+- Symbolic [CasADi](https://web.casadi.org) dynamic model for learning-based control
+- Environments for heterogeneous multi-UAV/UGV systems 
 
 
 

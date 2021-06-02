@@ -249,8 +249,10 @@ class DSLPIDControl(BaseControl):
     
     ################################################################################
 
-    def _one23DInterface(thrust):
-        """Utility function interfacing 1, 2, or 3D use cases.
+    def _one23DInterface(self,
+                         thrust
+                         ):
+        """Utility function interfacing 1, 2, or 3D thrust input use cases.
 
         Parameters
         ----------
