@@ -11,14 +11,18 @@ To run the script, type in a terminal:
 Notes
 -----
 Use:
+
     $ tensorboard --logdir ./results/save-<env>-<algo>-<obs>-<act>-<time-date>/tb/
-to see the tensorboard results at:
+
+To check the tensorboard results at:
+
     http://localhost:6006/
 
 """
 import os
 import time
 from datetime import datetime
+from sys import platform
 import argparse
 import subprocess
 import numpy as np
@@ -69,9 +73,10 @@ if __name__ == "__main__":
         os.makedirs(filename+'/')
 
     #### Print out current git commit hash #####################
-    git_commit = subprocess.check_output(["git", "describe", "--tags"]).strip()
-    with open(filename+'/git_commit.txt', 'w+') as f:
-        f.write(str(git_commit))
+    if platform == "linux" or platform == "darwin":
+        git_commit = subprocess.check_output(["git", "describe", "--tags"]).strip()
+        with open(filename+'/git_commit.txt', 'w+') as f:
+            f.write(str(git_commit))
 
     #### Warning ###############################################
     if ARGS.env == 'tune' and ARGS.act != ActionType.TUN:
@@ -207,7 +212,7 @@ if __name__ == "__main__":
                                     n_envs=1,
                                     seed=0
                                     )
-        if env_nam == "hover-aviary-v0": 
+        if env_name == "hover-aviary-v0": 
             eval_env = make_vec_env(HoverAviary,
                                     env_kwargs=sa_env_kwargs,
                                     n_envs=1,

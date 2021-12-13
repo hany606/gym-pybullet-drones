@@ -485,6 +485,7 @@ class BaseAviary(gym.Env):
         self.DRONE_IDS = np.array([p.loadURDF(os.path.dirname(os.path.abspath(__file__))+"/../assets/"+self.URDF,
                                               self.INIT_XYZS[i,:],
                                               p.getQuaternionFromEuler(self.INIT_RPYS[i,:]),
+                                              flags = p.URDF_USE_INERTIA_FROM_FILE,
                                               physicsClientId=self.CLIENT
                                               ) for i in range(self.NUM_DRONES)])
         for i in range(self.NUM_DRONES):
@@ -906,7 +907,7 @@ class BaseAviary(gym.Env):
             (4)-shaped array of ints (or dictionary of arrays) containing the current RPMs input.
 
         """
-        if isinstance(action, collections.Mapping):
+        if isinstance(action, collections.abc.Mapping):
             for k, v in action.items(): 
                 res_v = np.resize(v, (1, 4)) # Resize, possibly with repetition, to cope with different action spaces in RL subclasses
                 self.last_action[int(k), :] = res_v

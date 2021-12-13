@@ -11,6 +11,7 @@ To run the script, type in a terminal:
 Notes
 -----
 Check Ray's status at:
+
     http://127.0.0.1:8265
 
 """
@@ -18,6 +19,7 @@ import os
 import time
 import argparse
 from datetime import datetime
+from sys import platform
 import subprocess
 import pdb
 import math
@@ -153,9 +155,10 @@ if __name__ == "__main__":
         os.makedirs(filename+'/')
 
     #### Print out current git commit hash #####################
-    git_commit = subprocess.check_output(["git", "describe", "--tags"]).strip()
-    with open(filename+'/git_commit.txt', 'w+') as f:
-        f.write(str(git_commit))
+    if platform == "linux" or platform == "darwin":
+        git_commit = subprocess.check_output(["git", "describe", "--tags"]).strip()
+        with open(filename+'/git_commit.txt', 'w+') as f:
+            f.write(str(git_commit))
 
     #### Constants, and errors #################################
     if ARGS.obs==ObservationType.KIN:

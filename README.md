@@ -8,7 +8,7 @@ This repository's `master` branch is actively developed, please `git pull` frequ
 
 [Simple](https://en.wikipedia.org/wiki/KISS_principle) OpenAI [Gym environment](https://gym.openai.com/envs/#classic_control) based on [PyBullet](https://github.com/bulletphysics/bullet3) for multi-agent reinforcement learning with quadrotors 
 
-<img src="files/readme_images/helix.gif" alt="formation flight" width="360"> <img src="files/readme_images/helix.png" alt="control info" width="450">
+<img src="files/readme_images/helix.gif" alt="formation flight" width="350"> <img src="files/readme_images/helix.png" alt="control info" width="450">
 
 - The default `DroneModel.CF2X` dynamics are based on [Bitcraze's Crazyflie 2.x nano-quadrotor](https://www.bitcraze.io/documentation/hardware/crazyflie_2_1/crazyflie_2_1-datasheet.pdf)
 
@@ -18,6 +18,8 @@ This repository's `master` branch is actively developed, please `git pull` frequ
 
 - Suggestions and corrections are very welcome in the form of [issues](https://github.com/utiasDSL/gym-pybullet-drones/issues) and [pull requests](https://github.com/utiasDSL/gym-pybullet-drones/pulls), respectively
 
+> ## Why Reinforcement Learning of Quadrotor Control
+> A lot of recent RL research for continuous actions has focused on [policy gradient algorithms and actor-critic architectures](https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html). A quadrotor is (i) an easy-to-understand mobile robot platform whose (ii) control can be framed as a continuous states and actions problem but, beyond 1-dimension, (iii) it adds the complexity that many candidate policies lead to unrecoverable states, violating the assumption of the existence of a stationary state distribution on the entailed Markov chain.
 
 
 
@@ -36,7 +38,6 @@ This repository's `master` branch is actively developed, please `git pull` frequ
 |             *Aerodynamic effects* | Drag, downwash, ground| Drag                                          | Drag                                                |
 |          *OpenAI [`Gym`](https://github.com/openai/gym/blob/master/gym/core.py) interface* | **Yes** | No | **Yes**                                             |
 | *RLlib [`MultiAgentEnv`](https://github.com/ray-project/ray/blob/master/rllib/env/multi_agent_env.py) interface* | **Yes** | No | No                           |
-| *[PyMARL](https://github.com/oxwhirl/pymarl) integration* | *WIP*  | No                                   | No                                   |
 
 
 
@@ -96,7 +97,7 @@ $ git clone https://github.com/utiasDSL/gym-pybullet-drones.git
 $ cd gym-pybullet-drones/
 $ pip3 install -e .
 ```
-
+On Ubuntu and with a GPU available, optionally uncomment [line 203](https://github.com/utiasDSL/gym-pybullet-drones/blob/fab619b119e7deb6079a292a04be04d37249d08c/gym_pybullet_drones/envs/BaseAviary.py#L203) of `BaseAviary.py` to use the [`eglPlugin`](https://docs.google.com/document/d/10sXEhzFRSnvFcl3XxNGhnD4N2SedqwdAvK3dsihxVUA/edit#heading=h.778da594xyte)
 
 
 
@@ -117,9 +118,9 @@ $ python3 fly.py                             # Try 'python3 fly.py -h' to show t
 ```
 > Tip: use the GUI's sliders and button `Use GUI RPM` to override the control with interactive inputs
 
-<img src="files/readme_images/wp.gif" alt="sparse way points flight" width="360"> <img src="files/readme_images/wp.png" alt="control info" width="450">
+<img src="files/readme_images/wp.gif" alt="sparse way points flight" width="350"> <img src="files/readme_images/wp.png" alt="control info" width="450">
 
-<img src="files/readme_images/crash.gif" alt="yaw saturation" width="360"> <img src="files/readme_images/crash.png" alt="control info" width="450">
+<img src="files/readme_images/crash.gif" alt="yaw saturation" width="350"> <img src="files/readme_images/crash.png" alt="control info" width="450">
 
 - `learn.py` is an **RL example** to learn take-off using `stable-baselines3`'s [A2C](https://stable-baselines3.readthedocs.io/en/master/modules/a2c.html) or `rllib`'s [PPO](https://docs.ray.io/en/master/rllib-algorithms.html#ppo)
 ```
@@ -137,14 +138,14 @@ $ cd gym-pybullet-drones/examples/
 $ python3 downwash.py                        # Try 'python3 downwash.py -h' to show the script's customizable parameters
 ```
 
-<img src="files/readme_images/downwash.gif" alt="downwash example" width="360"> <img src="files/readme_images/downwash.png" alt="control info" width="450">
+<img src="files/readme_images/downwash.gif" alt="downwash example" width="350"> <img src="files/readme_images/downwash.png" alt="control info" width="450">
 
 - `compare.py` which replays and compare to a trace saved in [`example_trace.pkl`](https://github.com/utiasDSL/gym-pybullet-drones/tree/master/files/example_trace.pkl)
 ```
 $ cd gym-pybullet-drones/examples/
 $ python3 compare.py                         # Try 'python3 compare.py -h' to show the script's customizable parameters
 ```
-<img src="files/readme_images/trace_comparison.gif" alt="pid flight on sine trajectroy" width="360"> <img src="files/readme_images/trace_comparison.png" alt="control info" width="450">
+<img src="files/readme_images/trace_comparison.gif" alt="pid flight on sine trajectroy" width="350"> <img src="files/readme_images/trace_comparison.png" alt="control info" width="450">
 
 
 
@@ -319,7 +320,7 @@ Check the implementations of `_drag()`, `_groundEffect()`, and `_downwash()` in 
 
 ## RGB, Depth, and Segmentation Views
 
-<img src="files/readme_images/rgb.gif" alt="rgb view" width="270"> <img src="files/readme_images/dep.gif" alt="depth view" width="270"> <img src="files/readme_images/seg.gif" alt="segmentation view" width="270">
+<img src="files/readme_images/rgb.gif" alt="rgb view" width="260"> <img src="files/readme_images/dep.gif" alt="depth view" width="260"> <img src="files/readme_images/seg.gif" alt="segmentation view" width="260">
 
 
 
@@ -385,28 +386,27 @@ $ ros2 run ros2_gym_pybullet_drones random_control
 
 
 
-## Future Developments
+## Desiderata/WIP
 - Template scripts using [PyMARL](https://github.com/oxwhirl/pymarl)
 - Google [Colaboratory](https://colab.research.google.com/notebooks/intro.ipynb) example
 - Alternative multi-contribution downwash effect
 
-## Ongoing Projects
-- Symbolic [CasADi](https://web.casadi.org) dynamic model for learning-based control
-- Environments for heterogeneous multi-UAV/UGV systems 
 
 
 
 
 ## Citation
-If you wish, please cite this work [(link)](https://arxiv.org/abs/2103.02142) as
+If you wish, please cite our work [(link)](https://arxiv.org/abs/2103.02142) as
 ```
-@MISC{panerati2021learning,
+@INPROCEEDINGS{panerati2021learning,
       title={Learning to Fly---a Gym Environment with PyBullet Physics for Reinforcement Learning of Multi-agent Quadcopter Control}, 
       author={Jacopo Panerati and Hehui Zheng and SiQi Zhou and James Xu and Amanda Prorok and Angela P. Schoellig},
+      booktitle={2021 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
       year={2021},
-      eprint={2103.02142},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+      volume={},
+      number={},
+      pages={},
+      doi={}
 }
 ```
 
@@ -434,7 +434,7 @@ If you wish, please cite this work [(link)](https://arxiv.org/abs/2103.02142) as
 
 Bonus GIF for scrolling this far
 
-<img src="files/readme_images/2020.gif" alt="formation flight" width="360"> <img src="files/readme_images/2020.png" alt="control info" width="450">
+<img src="files/readme_images/2020.gif" alt="formation flight" width="350"> <img src="files/readme_images/2020.png" alt="control info" width="450">
 
 
 
