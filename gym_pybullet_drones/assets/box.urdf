@@ -1,0 +1,143 @@
+<?xml version="1.0" ?>
+
+<robot name="simple_box">
+    <link name="top">
+        <inertial>
+        <origin xyz="0 0 -0.35" /> 
+        <mass value="10" />
+        <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+        </inertial>
+        <visual>
+        <origin xyz="0 0 -0.35"/>
+        <geometry>
+            <box size="4 4 0.3" />
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 0 -0.35"/>
+        <geometry>
+            <box size="4 4 0.3" />
+        </geometry>
+        </collision>
+    </link>
+
+    <link name="north">
+        <inertial>
+        <origin xyz="2 0 0" /> 
+        <mass value="10.0" />
+        <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+        </inertial>
+        <visual>
+        <origin xyz="2 0 0"/>
+        <geometry>
+            <box size="0.3 4 1" />
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="2 0 0"/>
+        <geometry>
+            <box size="0.3 4 1" />
+        </geometry>
+        </collision>
+    </link>
+
+    <link name="south">
+        <inertial>
+        <origin xyz="-2 0 0" /> 
+        <mass value="10.0" />
+        <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+        </inertial>
+        <visual>
+        <origin xyz="-2 0 0"/>
+        <geometry>
+            <box size="0.3 4 1" />
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="-2 0 0"/>
+        <geometry>
+            <box size="0.3 4 1" />
+        </geometry>
+        </collision>
+    </link>
+
+    <link name="east">
+        <inertial>
+        <origin xyz="0 2 0" /> 
+        <mass value="10.0" />
+        <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+        </inertial>
+        <visual>
+        <origin xyz="0 2 0"/>
+        <geometry>
+            <box size="4 0.3 1" />
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 2 0"/>
+        <geometry>
+            <box size="4 0.3 1" />
+        </geometry>
+        </collision>
+    </link>
+
+
+    <link name="west">
+        <inertial>
+        <origin xyz="0 -2 0" /> 
+        <mass value="10.0" />
+        <inertia  ixx="1.0" ixy="0.0"  ixz="0.0"  iyy="100.0"  iyz="0.0"  izz="1.0" />
+        </inertial>
+        <visual>
+        <origin xyz="0 -2 0"/>
+        <geometry>
+            <box size="4 0.3 1" />
+        </geometry>
+        </visual>
+        <collision>
+        <origin xyz="0 -2 0"/>
+        <geometry>
+            <box size="4 0.3 1" />
+        </geometry>
+        </collision>
+    </link>
+
+    <joint name="joint1" type="fixed">
+        <parent link="north"/>
+        <child link="east"/>
+    </joint>
+
+    <joint name="joint2" type="fixed">
+        <parent link="north"/>
+        <child link="west"/>
+    </joint>
+
+    <joint name="joint3" type="fixed">
+        <parent link="south"/>
+        <child link="east"/>
+    </joint>
+
+    <joint name="joint4" type="fixed">
+        <parent link="south"/>
+        <child link="west"/>
+    </joint>
+
+    <joint name="joint5" type="fixed">
+        <parent link="top"/>
+        <child link="north"/>
+    </joint>
+    <joint name="joint6" type="fixed">
+        <parent link="top"/>
+        <child link="south"/>
+    </joint>
+    <joint name="joint7" type="fixed">
+        <parent link="top"/>
+        <child link="east"/>
+    </joint>
+    <joint name="joint8" type="fixed">
+        <parent link="top"/>
+        <child link="west"/>
+    </joint>
+
+
+</robot>

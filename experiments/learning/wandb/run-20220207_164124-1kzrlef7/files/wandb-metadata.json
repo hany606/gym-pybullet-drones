@@ -1,0 +1,24 @@
+{
+    "os": "Linux-5.4.0-97-generic-x86_64-with-Ubuntu-18.04-bionic",
+    "python": "3.7.5",
+    "heartbeatAt": "2022-02-07T13:41:26.117270",
+    "startedAt": "2022-02-07T13:41:24.632549",
+    "docker": null,
+    "gpu": "GeForce RTX 2060",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": "11.0.228",
+    "args": [],
+    "state": "running",
+    "program": "singleagent_test_custom_env.py",
+    "codePath": "experiments/learning/singleagent_test_custom_env.py",
+    "git": {
+        "remote": "git@github.com:hany606/gym-pybullet-drones.git",
+        "commit": "2d982bf8c421d066877dac71e4e8b20452006624"
+    },
+    "email": "h.hamed.elanwar@gmail.com",
+    "root": "/home/hany606/repos/research/Drones-PEG-Bachelor-Thesis-2022/gym-pybullet-drones",
+    "host": "hany606",
+    "username": "hany606",
+    "executable": "/usr/bin/python3"
+}

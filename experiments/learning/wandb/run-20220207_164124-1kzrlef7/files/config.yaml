@@ -1,0 +1,175 @@
+wandb_version: 1
+
+_current_progress_remaining:
+  desc: null
+  value: 1
+_custom_logger:
+  desc: null
+  value: 'False'
+_episode_num:
+  desc: null
+  value: 0
+_last_episode_starts:
+  desc: null
+  value: '[ True]'
+_last_obs:
+  desc: null
+  value: "[[ 0.        -0.2777778  0.2        0.        -0.         0.\n   0.    \
+    \     0.         0.         0.         0.         0.       ]]"
+_last_original_obs:
+  desc: null
+  value: None
+_logger:
+  desc: null
+  value: <stable_baselines3.common.logger.Logger object at 0x7f5aa897b250>
+_n_updates:
+  desc: null
+  value: 0
+_num_timesteps_at_start:
+  desc: null
+  value: 0
+_total_timesteps:
+  desc: null
+  value: 35000
+_vec_normalize_env:
+  desc: null
+  value: None
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.12.10
+    code_path: code/experiments/learning/singleagent_test_custom_env.py
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.5
+    start_time: 1644241284
+    t:
+      1:
+      - 1
+      2:
+      - 1
+      3:
+      - 17
+      - 22
+      4: 3.7.5
+      5: 0.12.10
+      8:
+      - 5
+      10:
+      - 3
+action_noise:
+  desc: null
+  value: None
+action_space:
+  desc: null
+  value: Box([-1. -1. -1.], [1. 1. 1.], (3,), float32)
+algo:
+  desc: null
+  value: PPO
+batch_size:
+  desc: null
+  value: 64
+clip_range:
+  desc: null
+  value: <function constant_fn.<locals>.func at 0x7f5a12f06f80>
+clip_range_vf:
+  desc: null
+  value: None
+device:
+  desc: null
+  value: cuda
+ent_coef:
+  desc: null
+  value: 0.0
+env:
+  desc: null
+  value: <stable_baselines3.common.vec_env.dummy_vec_env.DummyVecEnv object at 0x7f5a17db6550>
+ep_info_buffer:
+  desc: null
+  value: deque([], maxlen=100)
+ep_success_buffer:
+  desc: null
+  value: deque([], maxlen=100)
+eval_env:
+  desc: null
+  value: None
+gae_lambda:
+  desc: null
+  value: 0.95
+gamma:
+  desc: null
+  value: 0.99
+learning_rate:
+  desc: null
+  value: 0.0003
+lr_schedule:
+  desc: null
+  value: <function constant_fn.<locals>.func at 0x7f5a1864a3b0>
+max_grad_norm:
+  desc: null
+  value: 0.5
+n_envs:
+  desc: null
+  value: 1
+n_epochs:
+  desc: null
+  value: 10
+n_steps:
+  desc: null
+  value: 2048
+num_timesteps:
+  desc: null
+  value: 0
+observation_space:
+  desc: null
+  value: Box([-1. -1.  0. -1. -1. -1. -1. -1. -1. -1. -1. -1.], [1. 1. 1. 1. 1. 1.
+    1. 1. 1. 1. 1. 1.], (12,), float32)
+policy:
+  desc: null
+  value: "ActorCriticPolicy(\n  (features_extractor): FlattenExtractor(\n    (flatten):\
+    \ Flatten(start_dim=1, end_dim=-1)\n  )\n  (mlp_extractor): MlpExtractor(\n  \
+    \  (shared_net): Sequential(\n      (0): Linear(in_features=12, out_features=512,\
+    \ bias=True)\n      (1): ReLU()\n      (2): Linear(in_features=512, out_features=512,\
+    \ bias=True)\n      (3): ReLU()\n    )\n    (policy_net): Sequential(\n      (0):\
+    \ Linear(in_features=512, out_features=256, bias=True)\n      (1): ReLU()\n  \
+    \    (2): Linear(in_features=256, out_features=128, bias=True)\n      (3): ReLU()\n\
+    \    )\n    (value_net): Sequential(\n      (0): Linear(in_features=512, out_features=256,\
+    \ bias=True)\n      (1): ReLU()\n      (2): Linear(in_features=256, out_features=128,\
+    \ bias=True)\n      (3): ReLU()\n    )\n  )\n  (action_net): Linear(in_features=128,\
+    \ out_features=3, bias=True)\n  (value_net): Linear(in_features=128, out_features=1,\
+    \ bias=True)\n)"
+policy_class:
+  desc: null
+  value: <class 'stable_baselines3.common.policies.ActorCriticPolicy'>
+policy_kwargs:
+  desc: null
+  value: '{''activation_fn'': <class ''torch.nn.modules.activation.ReLU''>, ''net_arch'':
+    [512, 512, {''vf'': [256, 128], ''pi'': [256, 128]}]}'
+rollout_buffer:
+  desc: null
+  value: <stable_baselines3.common.buffers.RolloutBuffer object at 0x7f5a17f369d0>
+sde_sample_freq:
+  desc: null
+  value: -1
+seed:
+  desc: null
+  value: None
+start_time:
+  desc: null
+  value: 1644241286.2012687
+target_kl:
+  desc: null
+  value: None
+tensorboard_log:
+  desc: null
+  value: /home/hany606/repos/research/Drones-PEG-Bachelor-Thesis-2022/gym-pybullet-drones/experiments/learning/results/save-reach-ppo-kin-pid-02.07.2022_16.41.20/tb/
+use_sde:
+  desc: null
+  value: 'False'
+verbose:
+  desc: null
+  value: 1
+vf_coef:
+  desc: null
+  value: 0.5

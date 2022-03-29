@@ -1,24 +1,20 @@
-import math
+import os
 import numpy as np
 from gym import spaces
-# from ray.rllib.env.multi_agent_env import MultiAgentEnv, ENV_STATE
+import pybullet as p
 
 from gym_pybullet_drones.envs.BaseAviary import DroneModel, Physics, BaseAviary
+from gym_pybullet_drones.envs.single_agent_rl.BaseSingleAgentAviary import ActionType, ObservationType, BaseSingleAgentAviary
 
-from gym_pybullet_drones.envs.BaseAviary import DroneModel, Physics, BaseAviary
-from gym_pybullet_drones.envs.single_agent_rl.BaseSingleAgentAviary import ActionType, ObservationType
-from gym_pybullet_drones.envs.multi_agent_rl.BaseMultiagentAviary import BaseMultiagentAviary
 
-class LeaderFollowerAviary(BaseMultiagentAviary):
-    """Multi-agent RL problem: leader-follower."""
-
+class ReachAviary(BaseSingleAgentAviary):
+    """Single agent RL problem: fly through a gate."""
+    
     ################################################################################
-
+    
     def __init__(self,
                  drone_model: DroneModel=DroneModel.CF2X,
-                 num_drones: int=2,
-                 neighbourhood_radius: float=np.inf,
-                 initial_xyzs=None,
+                 initial_xyzs=np.array([[0,0,0.75]]),
                  initial_rpys=None,
                  physics: Physics=Physics.PYB,
                  freq: int=240,
@@ -26,19 +22,16 @@ class LeaderFollowerAviary(BaseMultiagentAviary):
                  gui=False,
                  record=False, 
                  obs: ObservationType=ObservationType.KIN,
-                 act: ActionType=ActionType.RPM):
-        """Initialization of a multi-agent RL environment.
+                 act: ActionType=ActionType.RPM
+                 ):
+        """Initialization of a single agent RL environment.
 
-        Using the generic multi-agent RL superclass.
+        Using the generic single agent RL superclass.
 
         Parameters
         ----------
         drone_model : DroneModel, optional
             The desired drone type (detailed in an .urdf file in folder `assets`).
-        num_drones : int, optional
-            The desired number of drones in the aviary.
-        neighbourhood_radius : float, optional
-            Radius used to compute the drones' adjacency matrix, in meters.
         initial_xyzs: ndarray | None, optional
             (NUM_DRONES, 3)-shaped array containing the initial XYZ position of the drones.
         initial_rpys: ndarray | None, optional
@@ -60,54 +53,75 @@ class LeaderFollowerAviary(BaseMultiagentAviary):
 
         """
         super().__init__(drone_model=drone_model,
-                         num_drones=num_drones,
-                         neighbourhood_radius=neighbourhood_radius,
                          initial_xyzs=initial_xyzs,
                          initial_rpys=initial_rpys,
                          physics=physics,
                          freq=freq,
                          aggregate_phy_steps=aggregate_phy_steps,
                          gui=gui,
-                         record=record, 
+                         record=record,
                          obs=obs,
                          act=act
                          )
 
     ################################################################################
     
+    def _addObstacles(self):
+        """Add obstacles to the environment.
+
+        Extends the superclass method and add the gate build of cubes and an architrave.
+
+        """
+        pass
+        # super()._addObstacles()
+        # p.loadURDF(os.path.dirname(os.path.abspath(__file__))+"/../../assets/architrave.urdf",
+        #            [0, -1, .55],
+        #            p.getQuaternionFromEuler([0, 0, 0]),
+        #            physicsClientId=self.CLIENT
+        #            )
+        # for i in range(10): 
+        #     p.loadURDF("cube_small.urdf",
+        #                [-.3, -1, .02+i*0.05],
+        #                p.getQuaternionFromEuler([0, 0, 0]),
+        #                physicsClientId=self.CLIENT
+        #                )
+        #     p.loadURDF("cube_small.urdf",
+        #                [.3, -1, .02+i*0.05],
+        #                p.getQuaternionFromEuler([0,0,0]),
+        #                physicsClientId=self.CLIENT
+        #                )
+
+    ################################################################################
+    
     def _computeReward(self):
-        """Computes the current reward value(s).
+        """Computes the current reward value.
 
         Returns
         -------
-        dict[int, float]
-            The reward value for each drone.
+        float
+            The reward.
 
         """
-        rewards = {}
-        states = np.array([self._getDroneStateVector(i) for i in range(self.NUM_DRONES)])
-        rewards[0] = -1 * np.linalg.norm(np.array([0, 0, 0.5]) - states[0, 0:3])**2
-        # rewards[1] = -1 * np.linalg.norm(np.array([states[1, 0], states[1, 1], 0.5]) - states[1, 0:3])**2 # DEBUG WITH INDEPENDENT REWARD 
-        for i in range(1, self.NUM_DRONES):
-            rewards[i] = -(1/self.NUM_DRONES) * np.linalg.norm(np.array([states[i, 0], states[i, 1], states[0, 2]]) - states[i, 0:3])**2
-        return rewards
+        state = self._getDroneStateVector(0)
+        norm_ep_time = (self.step_counter/self.SIM_FREQ) / self.EPISODE_LEN_SEC
+        # 0.5,0,0.5
+        return -10 * np.linalg.norm(np.array([0, -0.5, 0.75])-state[0:3])**2
 
     ################################################################################
     
     def _computeDone(self):
-        """Computes the current done value(s).
+        """Computes the current done value.
 
         Returns
         -------
-        dict[int | "__all__", bool]
-            Dictionary with the done value of each drone and 
-            one additional boolean value for key "__all__".
+        bool
+            Whether the current episode is done.
 
         """
-        bool_val = True if self.step_counter/self.SIM_FREQ > self.EPISODE_LEN_SEC else False
-        done = {i: bool_val for i in range(self.NUM_DRONES)}
-        done["__all__"] = bool_val # True if True in done.values() else False
-        return done
+        if self.step_counter/self.SIM_FREQ > self.EPISODE_LEN_SEC:
+            return True
+        else:
+            return False
 
     ################################################################################
     
@@ -118,14 +132,14 @@ class LeaderFollowerAviary(BaseMultiagentAviary):
 
         Returns
         -------
-        dict[int, dict[]]
-            Dictionary of empty dictionaries.
+        dict[str, int]
+            Dummy value.
 
         """
-        return {i: {} for i in range(self.NUM_DRONES)}
+        return {"answer": 42} #### Calculated by the Deep Thought supercomputer in 7.5M years
 
     ################################################################################
-
+    
     def _clipAndNormalizeState(self,
                                state
                                ):
@@ -202,12 +216,12 @@ class LeaderFollowerAviary(BaseMultiagentAviary):
         
         """
         if not(clipped_pos_xy == np.array(state[0:2])).all():
-            print("[WARNING] it", self.step_counter, "in LeaderFollowerAviary._clipAndNormalizeState(), clipped xy position [{:.2f} {:.2f}]".format(state[0], state[1]))
+            print("[WARNING] it", self.step_counter, "in FlyThruGateAviary._clipAndNormalizeState(), clipped xy position [{:.2f} {:.2f}]".format(state[0], state[1]))
         if not(clipped_pos_z == np.array(state[2])).all():
-            print("[WARNING] it", self.step_counter, "in LeaderFollowerAviary._clipAndNormalizeState(), clipped z position [{:.2f}]".format(state[2]))
+            print("[WARNING] it", self.step_counter, "in FlyThruGateAviary._clipAndNormalizeState(), clipped z position [{:.2f}]".format(state[2]))
         if not(clipped_rp == np.array(state[7:9])).all():
-            print("[WARNING] it", self.step_counter, "in LeaderFollowerAviary._clipAndNormalizeState(), clipped roll/pitch [{:.2f} {:.2f}]".format(state[7], state[8]))
+            print("[WARNING] it", self.step_counter, "in FlyThruGateAviary._clipAndNormalizeState(), clipped roll/pitch [{:.2f} {:.2f}]".format(state[7], state[8]))
         if not(clipped_vel_xy == np.array(state[10:12])).all():
-            print("[WARNING] it", self.step_counter, "in LeaderFollowerAviary._clipAndNormalizeState(), clipped xy velocity [{:.2f} {:.2f}]".format(state[10], state[11]))
+            print("[WARNING] it", self.step_counter, "in FlyThruGateAviary._clipAndNormalizeState(), clipped xy velocity [{:.2f} {:.2f}]".format(state[10], state[11]))
         if not(clipped_vel_z == np.array(state[12])).all():
-            print("[WARNING] it", self.step_counter, "in LeaderFollowerAviary._clipAndNormalizeState(), clipped z velocity [{:.2f}]".format(state[12]))
+            print("[WARNING] it", self.step_counter, "in FlyThruGateAviary._clipAndNormalizeState(), clipped z velocity [{:.2f}]".format(state[12]))
