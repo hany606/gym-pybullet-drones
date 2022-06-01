@@ -177,7 +177,9 @@ class BaseAviary(gym.Env):
         #### Connect to PyBullet ###################################
         if self.GUI:
             #### With debug GUI ########################################
-            self.CLIENT = p.connect(p.GUI) # p.connect(p.GUI, options="--opengl2")
+            self.CLIENT = p.connect(p.GUI)
+            # self.CLIENT = p.connect(p.SHARED_MEMORY) # p.connect(p.GUI, options="--opengl2")
+            # self.CLIENT = 0
             for i in [p.COV_ENABLE_RGB_BUFFER_PREVIEW, p.COV_ENABLE_DEPTH_BUFFER_PREVIEW, p.COV_ENABLE_SEGMENTATION_MARK_PREVIEW]:
                 p.configureDebugVisualizer(i, 0, physicsClientId=self.CLIENT)
             p.resetDebugVisualizerCamera(cameraDistance=3,
@@ -400,15 +402,15 @@ class BaseAviary(gym.Env):
         if self.first_render_call and not self.GUI:
             print("[WARNING] BaseAviary.render() is implemented as text-only, re-initialize the environment using Aviary(gui=True) to use PyBullet's graphical interface")
             self.first_render_call = False
-        print("\n[INFO] BaseAviary.render() ——— it {:04d}".format(self.step_counter),
-              "——— wall-clock time {:.1f}s,".format(time.time()-self.RESET_TIME),
-              "simulation time {:.1f}s@{:d}Hz ({:.2f}x)".format(self.step_counter*self.TIMESTEP, self.SIM_FREQ, (self.step_counter*self.TIMESTEP)/(time.time()-self.RESET_TIME)))
-        for i in range (self.NUM_DRONES):
-            print("[INFO] BaseAviary.render() ——— drone {:d}".format(i),
-                  "——— x {:+06.2f}, y {:+06.2f}, z {:+06.2f}".format(self.pos[i, 0], self.pos[i, 1], self.pos[i, 2]),
-                  "——— velocity {:+06.2f}, {:+06.2f}, {:+06.2f}".format(self.vel[i, 0], self.vel[i, 1], self.vel[i, 2]),
-                  "——— roll {:+06.2f}, pitch {:+06.2f}, yaw {:+06.2f}".format(self.rpy[i, 0]*self.RAD2DEG, self.rpy[i, 1]*self.RAD2DEG, self.rpy[i, 2]*self.RAD2DEG),
-                  "——— angular velocity {:+06.4f}, {:+06.4f}, {:+06.4f} ——— ".format(self.ang_v[i, 0], self.ang_v[i, 1], self.ang_v[i, 2]))
+        # print("\n[INFO] BaseAviary.render() ——— it {:04d}".format(self.step_counter),
+        #       "——— wall-clock time {:.1f}s,".format(time.time()-self.RESET_TIME),
+        #       "simulation time {:.1f}s@{:d}Hz ({:.2f}x)".format(self.step_counter*self.TIMESTEP, self.SIM_FREQ, (self.step_counter*self.TIMESTEP)/(time.time()-self.RESET_TIME)))
+        # for i in range (self.NUM_DRONES):
+        #     print("[INFO] BaseAviary.render() ——— drone {:d}".format(i),
+        #           "——— x {:+06.2f}, y {:+06.2f}, z {:+06.2f}".format(self.pos[i, 0], self.pos[i, 1], self.pos[i, 2]),
+        #           "——— velocity {:+06.2f}, {:+06.2f}, {:+06.2f}".format(self.vel[i, 0], self.vel[i, 1], self.vel[i, 2]),
+        #           "——— roll {:+06.2f}, pitch {:+06.2f}, yaw {:+06.2f}".format(self.rpy[i, 0]*self.RAD2DEG, self.rpy[i, 1]*self.RAD2DEG, self.rpy[i, 2]*self.RAD2DEG),
+        #           "——— angular velocity {:+06.4f}, {:+06.4f}, {:+06.4f} ——— ".format(self.ang_v[i, 0], self.ang_v[i, 1], self.ang_v[i, 2]))
     
     ################################################################################
 
